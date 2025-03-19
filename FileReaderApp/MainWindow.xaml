@@ -1,13 +1,27 @@
 ﻿<Window x:Class="FileReaderApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="File Reader" Height="400" Width="600">
+        Title="File Processor" Height="450" Width="800">
     <Grid>
-        <Button x:Name="OpenFileButton" Content="Open File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="OpenFileButton_Click"/>
-        <TextBox x:Name="FileContentTextBox" HorizontalAlignment="Stretch" Margin="10,40,10,100" VerticalAlignment="Stretch" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+        
+        <!-- Input File Selection -->
+        <Label Content="Input File:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="InputFilePathTextBox" HorizontalAlignment="Stretch" Margin="80,10,100,0" VerticalAlignment="Top" IsReadOnly="True"/>
+        <Button x:Name="BrowseInputFileButton" Content="Browse" HorizontalAlignment="Right" Margin="10,10,10,0" VerticalAlignment="Top" Width="80" Click="BrowseInputFileButton_Click"/>
 
-        <Label Content="Min word length:" HorizontalAlignment="Left" Margin="10,0,0,60" VerticalAlignment="Bottom"/>
-        <TextBox x:Name="MinWordLengthTextBox" HorizontalAlignment="Left" Margin="120,0,0,60" VerticalAlignment="Bottom" Width="50" Text="3"/>
-        <Button x:Name="FilterButton" Content="Filter" HorizontalAlignment="Left" Margin="180,0,0,60" VerticalAlignment="Bottom" Width="100" Click="FilterButton_Click"/>
+        <!-- Output File Selection -->
+        <Label Content="Output File:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="OutputFilePathTextBox" HorizontalAlignment="Stretch" Margin="80,40,100,0" VerticalAlignment="Top" IsReadOnly="True"/>
+        <Button x:Name="BrowseOutputFileButton" Content="Browse" HorizontalAlignment="Right" Margin="10,40,10,0" VerticalAlignment="Top" Width="80" Click="BrowseOutputFileButton_Click"/>
+
+        <!-- Settings -->
+        <Label Content="Min Word Length:" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="MinWordLengthTextBox" HorizontalAlignment="Left" Margin="120,80,0,0" VerticalAlignment="Top" Width="50" Text="3"/>
+
+        <!-- Process Button -->
+        <Button x:Name="ProcessButton" Content="Process File" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top" Width="100" Click="ProcessButton_Click"/>
+
+        <!-- Log -->
+        <TextBox x:Name="LogTextBox" HorizontalAlignment="Stretch" Margin="10,180,10,10" VerticalAlignment="Stretch" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </Window>

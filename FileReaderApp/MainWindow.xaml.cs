@@ -7,43 +7,70 @@ namespace FileReaderApp
 {
     public partial class MainWindow : Window
     {
-        private string _fileContent;
-
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void OpenFileButton_Click(object sender, RoutedEventArgs e)
+        private void BrowseInputFileButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
-                string filePath = openFileDialog.FileName;
-                _fileContent = File.ReadAllText(filePath);
-                FileContentTextBox.Text = _fileContent;
+                InputFilePathTextBox.Text = openFileDialog.FileName;
             }
         }
 
-        private void FilterButton_Click(object sender, RoutedEventArgs e)
+        private void BrowseOutputFileButton_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(_fileContent))
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            if (saveFileDialog.ShowDialog() == true)
             {
-                MessageBox.Show("No file content to filter.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                OutputFilePathTextBox.Text = saveFileDialog.FileName;
+            }
+        }
+
+        private void ProcessButton_Click(object sender, RoutedEventArgs e)
+        {
+            string inputFilePath = InputFilePathTextBox.Text;
+            string outputFilePath = OutputFilePathTextBox.Text;
+
+            if (string.IsNullOrEmpty(inputFilePath) || !File.Exists(inputFilePath))
+            {
+                MessageBox.Show("Please select a valid input file", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(outputFilePath))
+            {
+                MessageBox.Show("Please specify an output file", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             if (!int.TryParse(MinWordLengthTextBox.Text, out int minLength))
             {
-                MessageBox.Show("Please enter a valid number for minimum word length.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please enter a valid number for minimum word length", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            string filteredText = RemoveShortWords(_fileContent, minLength);
-            FileContentTextBox.Text = filteredText;
+            try
+            {
+                string fileContent = File.ReadAllText(inputFilePath);
+                string processedText = RemoveShortWords(fileContent, minLength);
+
+                File.WriteAllText(outputFilePath, processedText);
+
+                LogTextBox.AppendText($"File processed successfully: {outputFilePath}\n");
+            }
+            catch (Exception ex)
+            {
+                LogTextBox.AppendText($"An error occurred: {ex.Message}: {outputFilePath}\n");
+
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
-        public static string RemoveShortWords(string text, int minLength)
+        private static string RemoveShortWords(string text, int minLength)
         {
             // Regular expression for searching words
             string pattern = @"\b\w+\b";
