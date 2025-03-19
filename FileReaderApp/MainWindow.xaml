@@ -1,0 +1,10 @@
+﻿<Window x:Class="FileReaderApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="File Reader" Height="350" Width="525">
+    <Grid>
+        <Button x:Name="OpenFileButton" Content="Open File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="OpenFileButton_Click"/>
+        <TextBox x:Name="FileContentTextBox" HorizontalAlignment="Stretch" Margin="10,40,10,10" VerticalAlignment="Stretch" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+    </Grid>
+</Window>
+    
