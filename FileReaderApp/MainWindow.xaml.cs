@@ -70,9 +70,9 @@ namespace FileReaderApp
 
             try
             {
-                await ProcessFilesAsync(inputFilePaths, outputFolderPath, minLength);
+                await ProcessFilesAsync(inputFilePaths, outputFolderPath, minLength, RemoveShortWordsCheckBox.IsChecked == true, RemovePunctuationCheckBox.IsChecked == true);
 
-                LogTextBox.AppendText("All files processed.\n");
+                LogTextBox.AppendText("All files processed.\n\n");
             }
             catch (Exception ex)
             {
@@ -84,7 +84,7 @@ namespace FileReaderApp
             }
         }
 
-        private async Task ProcessFilesAsync(string[] inputFilePaths, string outputFolderPath, int minLength)
+        private async Task ProcessFilesAsync(string[] inputFilePaths, string outputFolderPath, int minLength, bool removeShortWords, bool removePunctuation)
         {
             int totalFiles = inputFilePaths.Length;
             int processedFiles = 0;
@@ -96,7 +96,7 @@ namespace FileReaderApp
 
                 try
                 {
-                    await Task.Run(() => ProcessFile(inputFilePath, outputFilePath, minLength));
+                    await Task.Run(() => ProcessFile(inputFilePath, outputFilePath, minLength, removeShortWords, removePunctuation));
 
                     processedFiles++;
                     int progress = (int)((double)processedFiles / totalFiles * 100);
@@ -111,15 +111,35 @@ namespace FileReaderApp
             }
         }
 
-        private void ProcessFile(string inputFilePath, string outputFilePath, int minLength)
+        private void ProcessFile(string inputFilePath, string outputFilePath, int minLength, bool removeShortWords, bool removePunctuation)
         {
             string fileContent = File.ReadAllText(inputFilePath);
-            string processedText = RemoveShortWords(fileContent, minLength);
+            string processedText = ProcessText(fileContent, minLength, removeShortWords, removePunctuation);
 
             File.WriteAllText(outputFilePath, processedText);
         }
 
-        private static string RemoveShortWords(string text, int minLength)
+        private string ProcessText(string text, int minLength, bool removeShortWords, bool removePunctuation)
+        {
+            if (removePunctuation)
+            {
+                text = RemovePunctuation(text);
+            }
+
+            if (removeShortWords)
+            {
+                text = RemoveShortWords(text, minLength);
+            }
+
+            return text;
+        }
+
+        private string RemovePunctuation(string text)
+        {
+            return Regex.Replace(text, @"[\p{P}]", "");
+        }
+
+        private string RemoveShortWords(string text, int minLength)
         {
             // Regular expression for searching words
             string pattern = @"\b\w+\b";

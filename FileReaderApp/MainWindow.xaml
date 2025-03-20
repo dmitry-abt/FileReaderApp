@@ -17,6 +17,9 @@
         <Label Content="Min Word Length:" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="MinWordLengthTextBox" HorizontalAlignment="Left" Margin="120,80,0,0" VerticalAlignment="Top" Width="50" Text="3"/>
 
+        <CheckBox x:Name="RemoveShortWordsCheckBox" Content="Remove Short Words" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="RemovePunctuationCheckBox" Content="Remove Punctuation" HorizontalAlignment="Left" Margin="150,110,0,0" VerticalAlignment="Top"/>
+
         <!-- Process Button -->
         <Button x:Name="ProcessButton" Content="Process Files" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top" Width="100" Click="ProcessButton_Click"/>
 
