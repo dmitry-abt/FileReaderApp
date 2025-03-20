@@ -42,7 +42,7 @@ namespace FileReaderApp
             }
         }
 
-        private void ProcessButton_Click(object sender, RoutedEventArgs e)
+        private async void ProcessButton_Click(object sender, RoutedEventArgs e)
         {
             string[] inputFilePaths = InputFilePathTextBox.Text.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             string outputFolderPath = OutputFolderPathTextBox.Text;
@@ -65,9 +65,12 @@ namespace FileReaderApp
                 return;
             }
 
+            ProcessButton.IsEnabled = false;
+            ProgressBar.Value = 0;
+
             try
             {
-                ProcessFiles(inputFilePaths, outputFolderPath, minLength);
+                await ProcessFilesAsync(inputFilePaths, outputFolderPath, minLength);
 
                 LogTextBox.AppendText("All files processed.\n");
             }
@@ -75,10 +78,17 @@ namespace FileReaderApp
             {
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            finally
+            {
+                ProcessButton.IsEnabled = true;
+            }
         }
 
-        private void ProcessFiles(string[] inputFilePaths, string outputFolderPath, int minLength)
+        private async Task ProcessFilesAsync(string[] inputFilePaths, string outputFolderPath, int minLength)
         {
+            int totalFiles = inputFilePaths.Length;
+            int processedFiles = 0;
+
             foreach (string inputFilePath in inputFilePaths)
             {
                 string fileName = Path.GetFileName(inputFilePath);
@@ -86,12 +96,13 @@ namespace FileReaderApp
 
                 try
                 {
-                    if (File.Exists(inputFilePath))
-                    {
-                        ProcessFile(inputFilePath, outputFilePath, minLength);
+                    await Task.Run(() => ProcessFile(inputFilePath, outputFilePath, minLength));
 
-                        LogTextBox.AppendText($"Processed: {fileName}\n");
-                    }
+                    processedFiles++;
+                    int progress = (int)((double)processedFiles / totalFiles * 100);
+                    Dispatcher.Invoke(() => ProgressBar.Value = progress);
+
+                    LogTextBox.AppendText($"Processed: {fileName}\n");
                 }
                 catch (Exception ex)
                 {

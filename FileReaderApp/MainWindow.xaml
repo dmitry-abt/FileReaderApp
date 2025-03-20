@@ -20,7 +20,10 @@
         <!-- Process Button -->
         <Button x:Name="ProcessButton" Content="Process Files" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top" Width="100" Click="ProcessButton_Click"/>
 
+        <!-- Progress Bar -->
+        <ProgressBar x:Name="ProgressBar" HorizontalAlignment="Stretch" Margin="10,180,10,0" VerticalAlignment="Top" Height="20" Minimum="0" Maximum="100" Value="0"/>
+
         <!-- Log -->
-        <TextBox x:Name="LogTextBox" HorizontalAlignment="Stretch" Margin="10,180,10,10" VerticalAlignment="Stretch" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+        <TextBox x:Name="LogTextBox" HorizontalAlignment="Stretch" Margin="10,210,10,10" VerticalAlignment="Stretch" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </Window>
